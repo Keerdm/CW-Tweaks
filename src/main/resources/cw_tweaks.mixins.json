@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.keerdm.cw_tweaks.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "cw_tweeks.refmap.json",
+  "mixins": [
+    "WorldGenRegionMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
