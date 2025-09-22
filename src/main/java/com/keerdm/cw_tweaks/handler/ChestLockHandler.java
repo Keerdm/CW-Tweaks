@@ -44,7 +44,7 @@ public class ChestLockHandler {
 
         try {
             BlockEntity blockEntity = levelAccessor.getBlockEntity(blockPos);
-            if (!(blockEntity instanceof ChestBlockEntity chest)) {
+            if (!(blockEntity instanceof ChestBlockEntity) && !blockEntity.getClass().getPackageName().contains("lootr:")) {
                 return;
             }
 
@@ -52,15 +52,16 @@ public class ChestLockHandler {
                 return;
             }
 
-            var nbt = chest.saveWithoutMetadata();
+            var nbt = blockEntity.saveWithoutMetadata();
             if (!nbt.contains("LootTable")) {
                 PENDING_CHESTS.add(new PendingChest(level, blockPos.immutable(), RandomSource.create(randomSource.nextLong())));
-
                 scheduleDelayedProcessing(level);
                 return;
             }
 
-            processChestNow(levelAccessor, level, blockPos, chunkAccess, randomSource, chest);
+            if (blockEntity instanceof ChestBlockEntity chest) {
+                processChestNow(levelAccessor, level, blockPos, chunkAccess, randomSource, chest);
+            }
 
         } catch (Exception e) {
             System.err.println("[CW Tweaks] Error processing chest at " + blockPos + ": " + e.getMessage());
